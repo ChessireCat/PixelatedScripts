@@ -280,6 +280,7 @@ client.PlayerGui.ScreenGui.AscenderCoreFrame.RarityCore.Changed:Connect(function
         Tokens = Tokens:gsub("[^%w%s+-.]", "")
         local TokenGain = string.split(tostring(RarityCore.TokenGain.Text), " ")[4]
         local CoreLuckBoost = string.split(tostring(RarityCore.CoreLuckBoost.Text), " ")[4]
-        sendmessage(tostring(newRarity), tostring("Core Luck Boost-"..CoreLuckBoost.." | ".."Token Gain-"..TokenGain.." | ".."Tokens-"..Tokens), tonumber(16562432))
+        local luckBoost = string.split(tostring(RarityCore.LuckBoost.Text), " ")[3]
+        sendmessage(tostring(newRarity.."(SA) | LuckBoost-"..luckBoost), tostring("Core Luck Boost-"..CoreLuckBoost.." | ".."Token Gain-"..TokenGain.." | ".."Tokens-"..Tokens), tonumber(16562432))
     end
 end)
