@@ -264,7 +264,7 @@ client.PlayerGui.ScreenGui.CharmsFrame.Notify.ChildAdded:Connect(function(childn
   --  print(tostring(Fcave).." cave")
     if tonumber(RarityNumber) >= tonumber(PrarityN) then
         if tonumber(Fcave) >= tonumber(Requirements[2]) then
-            sendmessage(tostring(Charm.."(C)"), tostring(CharmModule.RarityNames[RarityNumber]), tonumber(16777215))
+            sendmessage(tostring(Charm.."(C)"), tostring(CharmModule.RarityNames[RarityNumber]), tonumber(8509648))
         end
     end
 end)
