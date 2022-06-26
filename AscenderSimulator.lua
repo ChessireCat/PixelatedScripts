@@ -264,7 +264,22 @@ client.PlayerGui.ScreenGui.CharmsFrame.Notify.ChildAdded:Connect(function(childn
   --  print(tostring(Fcave).." cave")
     if tonumber(RarityNumber) >= tonumber(PrarityN) then
         if tonumber(Fcave) >= tonumber(Requirements[2]) then
-            sendmessage(tostring(Charm.."(C)"), tostring(CharmModule.RarityNames[RarityNumber]), tonumber(8509648))
+            sendmessage(tostring(Charm.."(C)"), tostring(CharmModule.RarityNames[RarityNumber]), tonumber(16777215))
         end
+    end
+end)
+
+client.PlayerGui.ScreenGui.AscenderCoreFrame.RarityCore.Changed:Connect(function(way)
+    if way == "Text" then
+        wait(0.1)
+        local RarityCore = client.PlayerGui.ScreenGui.AscenderCoreFrame
+        local RarityCoreT = client.PlayerGui.ScreenGui.AscenderCoreFrame.RarityCore.Text
+        local newRarity = tostring(RarityCoreT):split(" ")[3]
+        local Tokens = RarityCore.Tokens.Text
+        Tokens = string.split(Tokens, " ")[4]
+        Tokens = Tokens:gsub("[^%w%s+-.]", "")
+        local TokenGain = string.split(tostring(RarityCore.TokenGain.Text), " ")[4]
+        local CoreLuckBoost = string.split(tostring(RarityCore.CoreLuckBoost.Text), " ")[4]
+        sendmessage(tostring(newRarity), tostring("Core Luck Boost-"..CoreLuckBoost.." | ".."Token Gain-"..TokenGain.." | ".."Tokens-"..Tokens), tonumber(16562432))
     end
 end)
