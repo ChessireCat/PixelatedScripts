@@ -45,7 +45,7 @@ if isfile("AscenderSaves.txt") then
 --    print(checkforplus[1])
     else
     writefile("AscenderSaves.txt", "")
-    appendfile("AscenderSaves.txt", CMBH.." "..checkforplus[1]..tostring(RequiredTime))
+    appendfile("AscenderSaves.txt", CMBH.." "..checkforplus[1].." "..tostring(RequiredTime))
 end
 game:GetService("StarterGui"):SetCore("ChatMakeSystemMessage", {
     Text = "[PX]: The commands are\n/Ahook [1/x] \n/SChook [rarity:cavenumber]\n/RT [timeamount]\n--------------------------\n".."Charm requirement - "..tostring(CMBH).."\nAscender requirement - "..tostring(checkforplus[1]).."\nRequired time - "..tostring(RequiredTime);
