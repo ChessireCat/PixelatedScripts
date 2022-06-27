@@ -45,7 +45,7 @@ if isfile("AscenderSaves.txt") then
 --    print(checkforplus[1])
     else
     writefile("AscenderSaves.txt", "")
-    appendfile("AscenderSaves.txt", CMBH.." "..checkforplus[1].." "..tostring(RequiredTime))
+    appendfile("AscenderSaves.txt", CMBH.." "..checkforplus[1]..tostring(RequiredTime))
 end
 game:GetService("StarterGui"):SetCore("ChatMakeSystemMessage", {
     Text = "[PX]: The commands are\n/Ahook [1/x] \n/SChook [rarity:cavenumber]\n/RT [timeamount]\n--------------------------\n".."Charm requirement - "..tostring(CMBH).."\nAscender requirement - "..tostring(checkforplus[1]).."\nRequired time - "..tostring(RequiredTime);
@@ -124,7 +124,7 @@ function findPreciseRarity(chance)
             for i = 1, 10-NOC do
                 newS = newS.."0"
             end
-         --   print(NewChance)
+            print(NewChance)
         end
         NewChance = newS
     elseif string.find(chance, "T") then
@@ -158,7 +158,7 @@ function findPreciseRarity(chance)
             end
             wait()
             NewChance = newS
-           -- print(NewChance)
+            print(NewChance)
         end
         if string.find(chance, "/0") then
             NewChance = "1/10"
@@ -172,7 +172,7 @@ client.Chatted:Connect(function(message)
         if string.find(message, "SChook ") then
             local value = message:gsub("/e SChook ", "")
             CMBH = tostring(value)
-           -- print(CMBH)
+            print(CMBH)
             writefile("AscenderSaves.txt", CMBH.." "..checkforplus[1].." "..RequiredTime)
             game:GetService("StarterGui"):SetCore("ChatMakeSystemMessage", {
                 Text = '[PX]: Successfully set "Charm Rarity Requirement" to '..tostring(CMBH);
@@ -193,7 +193,7 @@ client.Chatted:Connect(function(message)
                     TextSize = 20
                 })
             end
-        --    print(checkforplus[1])
+            print(checkforplus[1])
         elseif string.find(message, "RT") then
             local value = message:gsub("/e RT ", "")
             RequiredTime =  tonumber(value)
@@ -244,12 +244,15 @@ game.Players.LocalPlayer.PlayerGui.ScreenGui.AscenderFrame.FailedMessage.Changed
   -- print(SetChance)
   -- print(tostring(Rarity).." rarity"..":chance "..tostring(Chance))
   local GlobalC = game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.RarityInfoFrame.MainFrame.RarityFrame.Main["3Chance"].Text
- -- print(Tinbetween)
+  print(Tinbetween)
   if Chance ~= logLchance then
    if tonumber(Chance) < tonumber(SetChance) then
              logLchance = Chance
-        if string.find(Checkit, "success..") and Tinbetween > 5 then
+        if string.find(Checkit, "success..") then
+            if Tinbetween > 5 then
             sendmessage(tostring(Rarity), cR, tostring(GlobalC), tostring(Tinbetween))
+            Tinbetween = 0
+            end
             Tinbetween = 0
         else
             --sendmessage(tostring(Rarity), cR, tonumber(16777215))
