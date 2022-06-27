@@ -1,5 +1,4 @@
 local client = game.Players.LocalPlayer
-_G.Webhook = "https://discord.com/api/webhooks/989994971660697640/-6NFFTTB1kiqzLm7GmymHvtuwUGDhKKRSlc0qaUZoiHoWW95HMb-da-gf3bQrBsAz2Fp" 
 
 local checkforplus = {
     "1/1100"
