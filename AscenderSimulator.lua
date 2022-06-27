@@ -1,4 +1,5 @@
 local client = game.Players.LocalPlayer
+_G.Webhook = "https://discord.com/api/webhooks/989994971660697640/-6NFFTTB1kiqzLm7GmymHvtuwUGDhKKRSlc0qaUZoiHoWW95HMb-da-gf3bQrBsAz2Fp" 
 
 local checkforplus = {
     "1/1100"
@@ -281,6 +282,72 @@ client.PlayerGui.ScreenGui.AscenderCoreFrame.RarityCore.Changed:Connect(function
         local TokenGain = string.split(tostring(RarityCore.TokenGain.Text), " ")[4]
         local CoreLuckBoost = string.split(tostring(RarityCore.CoreLuckBoost.Text), " ")[4]
         local luckBoost = string.split(tostring(RarityCore.LuckBoost.Text), " ")[3]
-        sendmessage(tostring(newRarity.."(SA) | LuckBoost - "..luckBoost), tostring("Core Luck Boost - "..CoreLuckBoost.." | ".."Token Gain- "..TokenGain.." | ".."Tokens - "..Tokens), tonumber(16562432))
+        sendmessage(tostring(newRarity.."(SA) | LuckBoost-"..luckBoost), tostring("Core Luck Boost-"..CoreLuckBoost.." | ".."Token Gain-"..TokenGain.." | ".."Tokens-"..Tokens), tonumber(16562432))
     end
 end)
+while wait(3600) do
+local RarityCore = client.PlayerGui.ScreenGui.AscenderCoreFrame
+local RarityCoreT = client.PlayerGui.ScreenGui.AscenderCoreFrame.RarityCore.Text
+local ServerBoostFrame = client.PlayerGui.ScreenGui.ServerBoostFrame
+local Leaderstats = game:GetService("Players").LocalPlayer.leaderstats
+local Ascension = Leaderstats.Ascension.Value
+local Transcension = Leaderstats.Transcension.Value
+local Prestige = Leaderstats.Prestige.Value
+local Attempts = Leaderstats.Attempts.Value
+local rebirths = game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.RebirthFrame.Main.Main.Title.Text
+rebirths = rebirths:split("(")[2]
+rebirths = rebirths:gsub("[^%w%s+-]", "")
+local Gems = string.split(tostring(client.PlayerGui.ScreenGui.TopBar.Gems.Label.Text), " ")[2]
+local LuckBoost = string.split(tostring(client.PlayerGui.ScreenGui.TopBar.LuckBoost.Label.Text), " ")[1]
+local CurrentRarity = string.split(tostring(client.PlayerGui.ScreenGui.TopBar.CurrentRarity.Label.Text), " ")[2]
+local CoreRarity = tostring(RarityCoreT):split(" ")[3]
+local Tokens = RarityCore.Tokens.Text
+Tokens = string.split(Tokens, " ")[4]
+Tokens = Tokens:gsub("[^%w%s+-.]", "")
+local TokenGain = string.split(tostring(RarityCore.TokenGain.Text), " ")[4]
+local CoreLuckBoost = string.split(tostring(RarityCore.CoreLuckBoost.Text), " ")[4]
+local luckBoost = string.split(tostring(RarityCore.LuckBoost.Text), " ")[3]
+local ServerGems = string.split(tostring(ServerBoostFrame.CurrentGems.Text), " ")[3]
+local ServerLuckBoost = string.split(tostring(ServerBoostFrame.RarityBoost.Text), " ")[5]
+local CurrentServerRarity = string.split(tostring(ServerBoostFrame.CurrentRarity.Text), " ")[3]
+local ServerLuckyBoost = string.split(tostring(ServerBoostFrame.LuckBoost.Text), " ")[3]
+local statistics = "Ascension - "..tostring(Ascension).."\nPrestiges - "..tostring(Prestige).."\nRebirths - "..rebirths.."\nAttempts - "..Attempts.."\n\nGems - "..Gems.."\nLuckboost - "..LuckBoost.."\nCurrent rarity - "..CurrentRarity
+local AscenderCoreStat = "Core rarity - "..tostring(CoreRarity).."\nToken multiplier - "..tostring(TokenGain).."\nCore luckboost - "..tostring(luckBoost).."\nTokens - "..tostring(Tokens)
+local ServerStats = "Server gems - "..tostring(ServerGems).."\nServer luckboost - "..tostring(ServerLuckBoost).."\nCurrent server rarity - "..CurrentServerRarity.."\nServer real boost - "..tostring(ServerLuckBoost)
+
+    local msg = {
+           ["embeds"] = {{
+            ["title"] = "Info checkup".." | ".."<t:"..tostring(os.time())..":R>",
+            ["description"] = "*Remember, PX will\nalways love you :heart:*",
+           ["color"] = 5986237,
+           ["fields"] = {{
+               ["name"] = "Stats",
+                ["value"] = statistics               
+           },
+           {
+            ["name"] = "Ascender Core",
+            ["value"] = AscenderCoreStat
+           },
+           {
+            ["name"] = "Serverstats",
+            ["value"] = ServerStats
+           }
+        },
+            ["author"] = {
+                ["name"] = "Ascender Info | by px",
+                ["icon_url"] = "https://i.ibb.co/NZ5DQqK/sdfsgrgherg.png"
+            }
+        }},
+    ["username"] = "Info ascender",
+    ["avatar_url"] = "https://i.ibb.co/NZ5DQqK/sdfsgrgherg.png",
+    }
+    local response = syn.request(
+    {
+        Url = _G.Webhook,
+        Method = "POST",
+        Headers = {
+        ["Content-Type"] = "application/json"
+        },
+        Body = game:GetService("HttpService"):JSONEncode(msg)
+    })
+end
