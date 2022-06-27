@@ -244,7 +244,7 @@ game.Players.LocalPlayer.PlayerGui.ScreenGui.AscenderFrame.FailedMessage.Changed
   -- print(SetChance)
   -- print(tostring(Rarity).." rarity"..":chance "..tostring(Chance))
   local GlobalC = game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.RarityInfoFrame.MainFrame.RarityFrame.Main["3Chance"].Text
-  print(Tinbetween)
+ -- print(Tinbetween)
   if Chance ~= logLchance then
    if tonumber(Chance) < tonumber(SetChance) then
              logLchance = Chance
