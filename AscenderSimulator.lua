@@ -7,6 +7,7 @@ local CMBH = "Rare:0" --charm must be equal to or higher than
 local Tinbetween = 0
 local HttpService = game:GetService("HttpService")
 local RequiredTime = 5
+local InfoTS = 3600
 function sendmessage(rarity, chance, globalchance, TSLasc)
     local msg = {
            ["embeds"] = {{
@@ -41,14 +42,15 @@ if isfile("AscenderSaves.txt") then
     CMBH = Info[1]
     checkforplus[1] = Info[2]
     RequiredTime = Info[3]
+    InfoTS = Info[4]
 --print(CMBH)
 --    print(checkforplus[1])
     else
     writefile("AscenderSaves.txt", "")
-    appendfile("AscenderSaves.txt", CMBH.." "..checkforplus[1]..tostring(RequiredTime))
+    appendfile("AscenderSaves.txt", CMBH.." "..checkforplus[1].." "..tostring(RequiredTime).." "..tostring(InfoTS))
 end
 game:GetService("StarterGui"):SetCore("ChatMakeSystemMessage", {
-    Text = "[PX]: The commands are\n/Ahook [1/x] \n/SChook [rarity:cavenumber]\n/RT [timeamount]\n--------------------------\n".."Charm requirement - "..tostring(CMBH).."\nAscender requirement - "..tostring(checkforplus[1]).."\nRequired time - "..tostring(RequiredTime);
+    Text = "[PX]: The commands are\n/e Ahook [1/x] \n/e SChook [rarity:cavenumber]\n/e RT [timeamount]\n/e TS [frequency of info posts in seconds]\n--------------------------\n".."Charm requirement - "..tostring(CMBH).."\nAscender requirement - "..tostring(checkforplus[1]).."\nRequired time - "..tostring(RequiredTime).."s".."\nInfo post frequency - "..tostring(InfoTS).."s";
     Color = Color3.fromRGB(255, 255, 255);
     Font = Enum.Font.SourceSansBold;
     TextSize = 20
@@ -173,7 +175,7 @@ client.Chatted:Connect(function(message)
             local value = message:gsub("/e SChook ", "")
             CMBH = tostring(value)
             print(CMBH)
-            writefile("AscenderSaves.txt", CMBH.." "..checkforplus[1].." "..RequiredTime)
+            writefile("AscenderSaves.txt", CMBH.." "..checkforplus[1].." "..RequiredTime.." "..tostring(InfoTS))
             game:GetService("StarterGui"):SetCore("ChatMakeSystemMessage", {
                 Text = '[PX]: Successfully set "Charm Rarity Requirement" to '..tostring(CMBH);
                 Color = Color3.fromRGB(255, 255, 255);
@@ -185,7 +187,7 @@ client.Chatted:Connect(function(message)
             local Nv = value:split("/")
             if Nv[1]/Nv[2] then
                 checkforplus[1] = tostring(value)
-                writefile("AscenderSaves.txt", CMBH.." "..checkforplus[1].." "..RequiredTime)
+                writefile("AscenderSaves.txt", CMBH.." "..checkforplus[1].." "..RequiredTime.." "..tostring(InfoTS))
                 game:GetService("StarterGui"):SetCore("ChatMakeSystemMessage", {
                     Text = '[PX]: Successfully set "Required Change" to '..tostring(checkforplus[1]);
                     Color = Color3.fromRGB(255, 255, 255);
@@ -197,9 +199,19 @@ client.Chatted:Connect(function(message)
         elseif string.find(message, "RT") then
             local value = message:gsub("/e RT ", "")
             RequiredTime =  tonumber(value)
-            writefile("AscenderSaves.txt", CMBH.." "..checkforplus[1].." "..RequiredTime)
+            writefile("AscenderSaves.txt", CMBH.." "..checkforplus[1].." "..RequiredTime.." "..tostring(InfoTS))
             game:GetService("StarterGui"):SetCore("ChatMakeSystemMessage", {
                 Text = '[PX]: Successfully set "Required Time" to '..tostring(RequiredTime);
+                Color = Color3.fromRGB(255, 255, 255);
+                Font = Enum.Font.SourceSansBold;
+                TextSize = 20
+            })
+        elseif string.find(message, "TS") then
+            local value = message:gsub("/e TS ", "")
+            InfoTS =  tonumber(value)
+            writefile("AscenderSaves.txt", CMBH.." "..checkforplus[1].." "..RequiredTime.." "..tostring(InfoTS))
+            game:GetService("StarterGui"):SetCore("ChatMakeSystemMessage", {
+                Text = '[PX]: Successfully set "Info timestamp" to '..tostring(InfoTS);
                 Color = Color3.fromRGB(255, 255, 255);
                 Font = Enum.Font.SourceSansBold;
                 TextSize = 20
@@ -405,75 +417,122 @@ client.PlayerGui.ScreenGui.AscenderCoreFrame.RarityCore.Changed:Connect(function
      })
     end
 end)
+local extraW = 0
 game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.TopBar.TimePlayed.Label.Changed:Connect(function(change)
     if change == "Text" then
         Tinbetween = Tinbetween+1
         --print(Tinbetween)
+        print(InfoTS)
+        extraW = extraW+1
+        if tonumber(extraW) >= tonumber(InfoTS) then
+            local AttemptsGoal = tostring(game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.GoalsFrame.Player.Scrolling.AttemptsGoal.Bar.BarBG.Bar.ProgressLabel.Text)
+            local AttemptsGoalLuck = tostring(game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.GoalsFrame.Player.Scrolling.AttemptsGoal.Boost.Text):split("x")[2]
+            local RarityGoal = tostring(game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.GoalsFrame.Player.Scrolling.RarityGoal.Bar.BarBG.Bar.ProgressLabel.Text)
+            local RarityGoalLuck = tostring(game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.GoalsFrame.Player.Scrolling.RarityGoal.Boost.Text):split("x")[2]
+            local TimeGoal = tostring(game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.GoalsFrame.Player.Scrolling.TimeGoal.Bar.BarBG.Bar.ProgressLabel.Text)
+            local TimeGoalLuck = tostring(game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.GoalsFrame.Player.Scrolling.TimeGoal.Boost.Text):split("x")[2]
+            local ClickGoal = tostring(game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.GoalsFrame.Player.Scrolling.ClickGoal.Bar.BarBG.Bar.ProgressLabel.Text)
+            local ClickGoalLuck = tostring(game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.GoalsFrame.Player.Scrolling.ClickGoal.Boost.Text):split("x")[2]
+            local ClickGemGoal = tostring(game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.GoalsFrame.Player.Scrolling.ClickGoal2.Bar.BarBG.Bar.ProgressLabel.Text)
+            local ClickGemBoost = tostring(game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.GoalsFrame.Player.Scrolling.ClickGoal2.Boost.Text):split("x")[2]
+            local RarityInfo = tostring(game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.GoalsFrame.Player.Scrolling.RarityGoal.BoostInfo.Text)
+            local TimeInfo = tostring(game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.GoalsFrame.Player.Scrolling.TimeGoal.BoostInfo.Text)
+            local ClickGoalInfo = tostring(game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.GoalsFrame.Player.Scrolling.ClickGoal.BoostInfo.Text)
+            local GemGoalInfo = tostring(game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.GoalsFrame.Player.Scrolling.ClickGoal2.BoostInfo.Text)
+            local AttemptInfo = tostring(game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.GoalsFrame.Player.Scrolling.AttemptsGoal.BoostInfo.Text)
+            local RarityCore = client.PlayerGui.ScreenGui.AscenderCoreFrame
+            local RarityCoreT = client.PlayerGui.ScreenGui.AscenderCoreFrame.RarityCore.Text
+            local ServerBoostFrame = client.PlayerGui.ScreenGui.ServerBoostFrame
+            local Leaderstats = game:GetService("Players").LocalPlayer.leaderstats
+            local Ascension = Leaderstats.Ascension.Value
+            local Transcension = Leaderstats.Transcension.Value
+            local Prestige = Leaderstats.Prestige.Value
+            local Attempts = Leaderstats.Attempts.Value
+            local rebirths = game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.RebirthFrame.Main.Main.Title.Text
+            rebirths = rebirths:split("(")[2]
+            rebirths = rebirths:gsub("[^%w%s+-]", "")
+            local Gems = string.split(tostring(client.PlayerGui.ScreenGui.TopBar.Gems.Label.Text), " ")[2]
+            local LuckBoost = string.split(tostring(client.PlayerGui.ScreenGui.TopBar.LuckBoost.Label.Text), " ")[1]
+            local CurrentRarity = string.split(tostring(client.PlayerGui.ScreenGui.TopBar.CurrentRarity.Label.Text), " ")[2]
+            local CoreRarity = tostring(RarityCoreT):split(" ")[3]
+            local Tokens = RarityCore.Tokens.Text
+            Tokens = string.split(Tokens, " ")[4]
+            Tokens = Tokens:gsub("[^%w%s+-.]", "")
+            local TokenGain = string.split(tostring(RarityCore.TokenGain.Text), " ")[4]
+            local CoreLuckBoost = string.split(tostring(RarityCore.CoreLuckBoost.Text), " ")[4]
+            local luckBoost = string.split(tostring(RarityCore.LuckBoost.Text), " ")[3]
+            local ServerGems = string.split(tostring(ServerBoostFrame.CurrentGems.Text), " ")[3]
+            local ServerLuckBoost = string.split(tostring(ServerBoostFrame.RarityBoost.Text), " ")[5]
+            local CurrentServerRarity = string.split(tostring(ServerBoostFrame.CurrentRarity.Text), " ")[3]
+            local ServerLuckyBoost = string.split(tostring(ServerBoostFrame.LuckBoost.Text), " ")[3]
+            local statistics = "Ascension - "..tostring(Ascension).."\nTranscensions - "..Transcension.."\nPrestiges - "..tostring(Prestige).."\nRebirths - "..rebirths.."\nAttempts - "..Attempts.."\n\nGems - "..Gems.."\nLuckboost - "..LuckBoost.."\nCurrent rarity - "..CurrentRarity
+            local AscenderCoreStat = "Core rarity - "..tostring(CoreRarity).."\nToken multiplier - "..tostring(TokenGain).."\nCore luckboost - "..tostring(luckBoost).."\nTokens - "..tostring(Tokens)
+            local ServerStats = "Server gems - "..tostring(ServerGems).."\nServer luckboost - "..tostring(ServerLuckBoost).."\nCurrent server rarity - "..CurrentServerRarity.."\nServer real boost - "..tostring(ServerLuckBoost)
+            local AttemptsStuff = "Goal attempts - "..AttemptsGoal.."\nAdded Luck - plus x"..AttemptsGoalLuck.."\n"..AttemptInfo
+            local RarityStuff = "Rarity goal - "..RarityGoal.."\nAdded Luck - plus x"..RarityGoalLuck.."\n"..RarityInfo
+            local TimeStuff = "Time goal - "..TimeGoal.."\nAdded Luck - plus x"..TimeGoalLuck.."\n"..TimeInfo
+            local ClickGoalLuck = "Click Goal (luck) - "..ClickGoal.."\nAdded Luck - plus x"..ClickGoalLuck.."\n"..ClickGoalInfo
+            local ClickGoalGems = "Click Goal (gems) - "..ClickGemGoal.."\nAdded Gem multi - x"..ClickGemBoost.."\n"..GemGoalInfo
+        local msg = {
+            ["embeds"] = {{
+             ["title"] = "Info checkup".." | ".."<t:"..tostring(os.time())..":R>",
+             ["description"] = "*Remember, PX will\nalways love you :heart:*",
+            ["color"] = 5986237,
+            ["fields"] = {{
+                ["name"] = "Stats",
+                 ["value"] = statistics               
+            },
+            {
+             ["name"] = "Ascender Core",
+             ["value"] = AscenderCoreStat
+            },
+            {
+             ["name"] = "Serverstats",
+             ["value"] = ServerStats
+            },
+            {
+             ["name"] = "Attempts Goal",
+             ["value"] = AttemptsStuff
+            },
+             {
+             ["name"] = "Rarity Goal",
+             ["value"] = RarityStuff
+             },
+             {
+             ["name"] = "Timeplay Goal",
+             ["value"] = TimeStuff
+             },
+             {
+             ["name"] = "Click Goal (Luck)",
+             ["value"] = ClickGoalLuck
+             },
+             {
+             ["name"] = "Click Goal (Gems)",
+             ["value"] = ClickGoalGems
+             },
+             {
+             ["name"] = "Set variables",
+             ["value"] = "Charm luck & cave requirement - "..tostring(CMBH).."\nRarity requirement - "..tostring(checkforplus[1]).."\nRequired time between posts - "..tostring(RequiredTime).."s".."\nInfo post frequency - "..tostring(InfoTS).."s"
+             },
+             },
+             ["author"] = {
+                 ["name"] = "Ascender Info | by px",
+                 ["icon_url"] = "https://i.ibb.co/NZ5DQqK/sdfsgrgherg.png"
+             }
+         }},
+        ["username"] = "Info ascender",
+        ["avatar_url"] = "https://i.ibb.co/NZ5DQqK/sdfsgrgherg.png",
+        }
+        local response = syn.request(
+        {
+         Url = _G.Webhook,
+         Method = "POST",
+         Headers = {
+         ["Content-Type"] = "application/json"
+         },
+         Body = game:GetService("HttpService"):JSONEncode(msg)
+        })
+        extraW = 0
+        end
     end
 end)
-while wait(3600) do
-local RarityCore = client.PlayerGui.ScreenGui.AscenderCoreFrame
-local RarityCoreT = client.PlayerGui.ScreenGui.AscenderCoreFrame.RarityCore.Text
-local ServerBoostFrame = client.PlayerGui.ScreenGui.ServerBoostFrame
-local Leaderstats = game:GetService("Players").LocalPlayer.leaderstats
-local Ascension = Leaderstats.Ascension.Value
-local Transcension = Leaderstats.Transcension.Value
-local Prestige = Leaderstats.Prestige.Value
-local Attempts = Leaderstats.Attempts.Value
-local rebirths = game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.RebirthFrame.Main.Main.Title.Text
-rebirths = rebirths:split("(")[2]
-rebirths = rebirths:gsub("[^%w%s+-]", "")
-local Gems = string.split(tostring(client.PlayerGui.ScreenGui.TopBar.Gems.Label.Text), " ")[2]
-local LuckBoost = string.split(tostring(client.PlayerGui.ScreenGui.TopBar.LuckBoost.Label.Text), " ")[1]
-local CurrentRarity = string.split(tostring(client.PlayerGui.ScreenGui.TopBar.CurrentRarity.Label.Text), " ")[2]
-local CoreRarity = tostring(RarityCoreT):split(" ")[3]
-local Tokens = RarityCore.Tokens.Text
-Tokens = string.split(Tokens, " ")[4]
-Tokens = Tokens:gsub("[^%w%s+-.]", "")
-local TokenGain = string.split(tostring(RarityCore.TokenGain.Text), " ")[4]
-local CoreLuckBoost = string.split(tostring(RarityCore.CoreLuckBoost.Text), " ")[4]
-local luckBoost = string.split(tostring(RarityCore.LuckBoost.Text), " ")[3]
-local ServerGems = string.split(tostring(ServerBoostFrame.CurrentGems.Text), " ")[3]
-local ServerLuckBoost = string.split(tostring(ServerBoostFrame.RarityBoost.Text), " ")[5]
-local CurrentServerRarity = string.split(tostring(ServerBoostFrame.CurrentRarity.Text), " ")[3]
-local ServerLuckyBoost = string.split(tostring(ServerBoostFrame.LuckBoost.Text), " ")[3]
-local statistics = "Ascension - "..tostring(Ascension).."\nTranscensions - "..Transcension.."\nPrestiges - "..tostring(Prestige).."\nRebirths - "..rebirths.."\nAttempts - "..Attempts.."\n\nGems - "..Gems.."\nLuckboost - "..LuckBoost.."\nCurrent rarity - "..CurrentRarity
-local AscenderCoreStat = "Core rarity - "..tostring(CoreRarity).."\nToken multiplier - "..tostring(TokenGain).."\nCore luckboost - "..tostring(luckBoost).."\nTokens - "..tostring(Tokens)
-local ServerStats = "Server gems - "..tostring(ServerGems).."\nServer luckboost - "..tostring(ServerLuckBoost).."\nCurrent server rarity - "..CurrentServerRarity.."\nServer real boost - "..tostring(ServerLuckBoost)
-
-    local msg = {
-           ["embeds"] = {{
-            ["title"] = "Info checkup".." | ".."<t:"..tostring(os.time())..":R>",
-            ["description"] = "*Remember, PX will\nalways love you :heart:*",
-           ["color"] = 5986237,
-           ["fields"] = {{
-               ["name"] = "Stats",
-                ["value"] = statistics               
-           },
-           {
-            ["name"] = "Ascender Core",
-            ["value"] = AscenderCoreStat
-           },
-           {
-            ["name"] = "Serverstats",
-            ["value"] = ServerStats
-           }
-        },
-            ["author"] = {
-                ["name"] = "Ascender Info | by px",
-                ["icon_url"] = "https://i.ibb.co/NZ5DQqK/sdfsgrgherg.png"
-            }
-        }},
-    ["username"] = "Info ascender",
-    ["avatar_url"] = "https://i.ibb.co/NZ5DQqK/sdfsgrgherg.png",
-    }
-    local response = syn.request(
-    {
-        Url = _G.Webhook,
-        Method = "POST",
-        Headers = {
-        ["Content-Type"] = "application/json"
-        },
-        Body = game:GetService("HttpService"):JSONEncode(msg)
-    })
-end
